@@ -96,7 +96,15 @@ resource "google_compute_firewall" "rules" {
 
   allow {
     protocol = "tcp"
-    ports    = ["22","80","443"]
+    ports    = ["22"]
+  }
+  allow {
+    protocol = "tcp"
+    ports    = ["80",]
+  }
+  allow {
+    protocol = "tcp"
+    ports    = ["443"]
   }
   allow {
     protocol = "udp"
