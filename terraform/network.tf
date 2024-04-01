@@ -80,6 +80,10 @@ resource "google_compute_instance" "private-vm" {
     network    = "my-custom-network"
     subnetwork = google_compute_subnetwork.private-subnet.name # Replace with a reference or self link to your subnet, in quotes
   }
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 # Create Private Subnet for DataBase
@@ -88,6 +92,10 @@ resource "google_compute_subnetwork" "db-subnet" {
   ip_cidr_range = "10.10.3.0/24"
   network       = google_compute_network.vpc.name
   region = "us-central1"
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 ## Create a VM in the db-subnet
@@ -104,7 +112,11 @@ resource "google_compute_instance" "db-vm" {
   }
   network_interface {
     network    = "my-custom-network"
-    subnetwork = google_compute_subnetwork.private-subnet.name # Replace with a reference or self link to your subnet, in quotes
+    subnetwork = google_compute_subnetwork.db-subnet.name # Replace with a reference or self link to your subnet, in quotes
+  }
+
+  lifecycle {
+    ignore_changes = all
   }
 }
 
@@ -140,6 +152,10 @@ resource "google_compute_firewall" "rules" {
   }
   #source_ranges = ["35.235.240.0/20"]
   source_ranges = ["35.235.240.0/20"]
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 ## Create IAP SSH permissions for your test instance
@@ -159,6 +175,10 @@ resource "google_compute_router" "router" {
   name    = "nat-router"
   network = "my-custom-network"
   region  = "us-central1"
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 ## Create Nat Gateway
@@ -173,6 +193,10 @@ resource "google_compute_router_nat" "nat" {
   log_config {
     enable = true
     filter = "ERRORS_ONLY"
+  }
+
+  lifecycle {
+    ignore_changes = all
   }
 }
 
@@ -228,6 +252,10 @@ resource "google_sql_database_instance" "mysql-from-tf"{
     }    
   }
 
+  lifecycle {
+    ignore_changes = all
+  }
+
 }
 
 
@@ -236,6 +264,10 @@ name = "quickstart_db"
 instance = "${google_sql_database_instance.mysql-from-tf.name}"
 charset = "utf8"
 collation = "utf8_general_ci"
+
+lifecycle {
+    ignore_changes = all
+  }
 }
 
 
@@ -244,4 +276,8 @@ resource "google_sql_user" "users" {
   password = "Abcd1234"
   host = "%"
   instance = "${google_sql_database_instance.mysql-from-tf.name}"
+
+  lifecycle {
+    ignore_changes = all
+  }
 }          
