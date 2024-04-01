@@ -124,9 +124,10 @@ resource "google_compute_instance" "db-vm" {
 resource "google_compute_firewall" "rules" {
   project = var.project_name
   name    = "allow-ssh"
-  network = "my-custom-network" 
- 
-  allow {
+#network = "my-custom-network" 
+  network       = google_compute_network.vpc.name
+
+    allow {
     protocol = "icmp"
   }
 
@@ -173,9 +174,10 @@ resource "google_compute_firewall" "rules" {
 resource "google_compute_router" "router" {
   project = var.project_name
   name    = "nat-router"
-  network = "my-custom-network"
+#network = "my-custom-network"
+  network       = google_compute_network.vpc.name
   region  = "us-central1"
-
+  
   lifecycle {
     ignore_changes = all
   }
