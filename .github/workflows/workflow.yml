@@ -51,12 +51,11 @@ jobs:
       - name: Get instance IPs
 #run: echo "::set-output name=instance_ips::$(terraform output -json instance_ips | jq -r '.value[]')"
         run: echo "::set-output name=instance_ips::$(terraform output -json instance_ips | jq -r '.value[]')"
-# SSH into VMs   
+# SSH into VMs and Run docker container  
       
-      - name: SSH into VMs
+      - name: SSH into VMs and Run Container
         uses: appleboy/ssh-action@master
         with:
-#host: ${{ split(env.instance_ips,'\n')[0] }}
             host: ${{ steps.get_ips.outputs.instance_ips }}
             username: admin
             port: 22
