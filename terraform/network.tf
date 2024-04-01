@@ -1,7 +1,19 @@
+# check if the network is available
+/*
+data "google_compute_network" "existing_network" {
+  name = "my-custom-network"
+}
+*/
 # Create a VPC
 resource "google_compute_network" "vpc" {
+  #count = length(data.google_compute_network.my-custom-network) == 0 ? 1 : 0
   name                    = "my-custom-network"
+  #self_link = google_compute_network.existing_network[count.index].self_link
   auto_create_subnetworks = "false"
+
+  lifecycle {
+    ignore_changes = all
+  }
 
 }
 
@@ -11,6 +23,10 @@ resource "google_compute_subnetwork" "public-subnet" {
   ip_cidr_range = "10.10.1.0/24"
   network       = google_compute_network.vpc.name
   region = "us-central1"
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 ## Create a VM in the public-subnet
@@ -29,6 +45,10 @@ resource "google_compute_instance" "public-vm" {
     network    = "my-custom-network"
     subnetwork = google_compute_subnetwork.public-subnet.name # Replace with a reference or self link to your subnet, in quotes
   }
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 # Create a Private-Subnet
@@ -37,6 +57,10 @@ resource "google_compute_subnetwork" "private-subnet" {
   ip_cidr_range = "10.10.4.0/24"
   network       = google_compute_network.vpc.name
   region = "us-central1"
+
+  lifecycle {
+    ignore_changes = all
+  }
 }
 
 ## Create a VM in the private-subnet
