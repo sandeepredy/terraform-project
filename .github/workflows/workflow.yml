@@ -58,12 +58,14 @@ jobs:
         with:
 #host: ${{ split(env.instance_ips,'\n')[0] }}
             host: ${{ steps.get_ips.outputs.instance_ips }}
-            username: public-vm
+            username: admin
+            port: 22
             key: ${{ secrets.TERRAFORM_KEY}}
             script: |
               scp -r ./pythonapi private-vm:/tmp
               gcloud config set project alert-flames-276807
-              gcloud compute ssh --zone us-central1-b  private-vm
+              ssh -o StrictHostKeyChecking=no -i ${{ secrets.TERRAFORM_KEY }} private-vm@${{ steps.get_ips.outputs.instance_ips }} << 'EOF'
+            
               cd ./tmp
                 
               sudo apt-get update
