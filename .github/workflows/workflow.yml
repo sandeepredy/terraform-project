@@ -63,7 +63,7 @@ jobs:
             script: |
               scp -r ./pythonapi private-vm:/tmp
               gcloud config set project alert-flames-276807
-              ssh -o StrictHostKeyChecking=no -i ${{ secrets.TERRAFORM_KEY }} private-vm@${{ steps.get_ips.outputs.instance_ips }} << 'EOF'
+              ssh -o StrictHostKeyChecking=no -i ${{ secrets.TERRAFORM_KEY }} private-vm@${{ steps.get_ips.outputs.instance_ips }} 
             
               cd ./tmp
                 
