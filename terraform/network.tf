@@ -100,7 +100,7 @@ resource "google_compute_firewall" "rules" {
   }
   allow {
     protocol = "tcp"
-    ports    = ["80",]
+    ports    = ["80"]
   }
   allow {
     protocol = "tcp"
