@@ -200,6 +200,9 @@ resource "google_compute_router_nat" "nat" {
   }
 }
 
+#for Creating the Database
+/*
+
 resource "google_compute_global_address" "private_ip_address" {
   #name          = google_compute_network.my-custom-network.name
   name          = google_compute_network.vpc.name
@@ -280,4 +283,6 @@ resource "google_sql_user" "users" {
   lifecycle {
     ignore_changes = all
   }
-}          
+}   
+
+*/
